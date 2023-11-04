@@ -2,12 +2,22 @@ from rest_framework.generics import ListAPIView, DestroyAPIView, UpdateAPIView, 
 from rest_framework.viewsets import ModelViewSet
 
 from main.models import Dog, Breed
-from main.serializers import DogSerializer, DogListSerializer, BreedDetailSerializer, DogDetailSerializer
+from main.permissions import IsOwnerOrStaff
+from main.serializers import DogSerializer, DogListSerializer, BreedDetailSerializer, DogDetailSerializer, \
+    BreedSerializer, BreedListSerializer
 
 
 class BreedViewSet(ModelViewSet):
     queryset = Breed.objects.all()
-    serializer_class = BreedDetailSerializer
+    default_serializer = BreedSerializer
+    serializes = {
+        'list': BreedListSerializer,
+        'retrieve': BreedDetailSerializer,
+
+    }
+
+    def get_serializer_class(self):
+        return self.serializes.get(self.action, self.default_serializer)
 
 
 class DogListAPIView(ListAPIView):
@@ -18,6 +28,7 @@ class DogListAPIView(ListAPIView):
 class DogDetailAPIView(RetrieveAPIView):
     queryset = Dog.objects.all()
     serializer_class = DogDetailSerializer
+    permission_classes = [IsOwnerOrStaff]
 
 
 class DogCreateAPIView(CreateAPIView):
@@ -31,3 +42,5 @@ class DogUpdateAPIView(UpdateAPIView):
 
 class DogDeleteAPIView(DestroyAPIView):
     queryset = Dog.objects.all()
+
+

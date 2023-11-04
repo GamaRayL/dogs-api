@@ -6,6 +6,12 @@ from rest_framework.serializers import ModelSerializer
 from main.models import Dog, Breed
 
 
+class BreedSerializer(ModelSerializer):
+    class Meta:
+        model = Breed
+        fields = '__all__'
+
+
 class BreedListSerializer(ModelSerializer):
     class Meta:
         model = Breed
@@ -18,7 +24,7 @@ class BreedDetailSerializer(ModelSerializer):
     @staticmethod
     def get_dogs_this_breed(breed):
         if Dog.objects.filter(breed=breed):
-            return [dog.name for dog in Dog.objects.filter(breed=breed)]
+            return DogListSerializer(Dog.objects.filter(breed=breed), many=True).data
         else:
             return None
 
