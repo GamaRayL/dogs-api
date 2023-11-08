@@ -1,4 +1,5 @@
 django
+djangorestframework-simplejwt
 psycopg2-binary
 pillow
 djangorestframework

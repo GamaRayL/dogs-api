@@ -57,4 +57,4 @@ class DogDetailSerializer(ModelSerializer):
 
     class Meta:
         model = Dog
-        fields = ('name', 'breed', 'dog_with_same_breed')
+        fields = ('name', 'breed', 'is_public', 'dog_with_same_breed')

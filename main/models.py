@@ -23,6 +23,7 @@ class Dog(models.Model):
     photo = models.ImageField(upload_to='photos/', verbose_name='фотография', **NULLABLE)
     birth_date = models.DateField(verbose_name='дата рождения', **NULLABLE)
     email = models.CharField(max_length=150, unique=True, verbose_name='почта', **NULLABLE)
+    is_public = models.BooleanField(default=False, verbose_name='для всех')
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.SET_NULL,
