@@ -4,6 +4,7 @@ from rest_framework.relations import SlugRelatedField
 from rest_framework.serializers import ModelSerializer
 
 from main.models import Dog, Breed
+from main.validators import DogNameValidator
 
 
 class BreedSerializer(ModelSerializer):
@@ -37,6 +38,9 @@ class DogSerializer(ModelSerializer):
     class Meta:
         model = Dog
         fields = '__all__'
+        validators = [
+            DogNameValidator(field='name')
+        ]
 
 
 class DogListSerializer(ModelSerializer):

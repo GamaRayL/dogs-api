@@ -83,8 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'dogs_crud',
-        'USER': 'postgres',
-        'PASSWORD': '1612'
+        'USER': 'postgres'
     }
 }
 
