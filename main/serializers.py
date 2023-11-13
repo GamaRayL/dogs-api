@@ -1,9 +1,9 @@
-from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 from rest_framework.relations import SlugRelatedField
 from rest_framework.serializers import ModelSerializer
 
 from main.models import Dog, Breed
+from main.services import get_currency_rate
 from main.validators import DogNameValidator
 
 
@@ -37,7 +37,7 @@ class BreedDetailSerializer(ModelSerializer):
 class DogSerializer(ModelSerializer):
     class Meta:
         model = Dog
-        fields = '__all__'
+        exclude = ['price']
         validators = [
             DogNameValidator(field='name')
         ]
@@ -48,17 +48,32 @@ class DogListSerializer(ModelSerializer):
 
     class Meta:
         model = Dog
-        fields = ('name', 'breed')
+        fields = ('id', 'name', 'breed')
 
 
 class DogDetailSerializer(ModelSerializer):
     breed = BreedDetailSerializer()
     dog_with_same_breed = SerializerMethodField()
+    price_usd = SerializerMethodField()
+    price_eur = SerializerMethodField()
 
     @staticmethod
-    def get_dog_with_same_breed(dog):
-        return Dog.objects.filter(breed=dog.breed).count()
+    def get_price_usd(obj):
+        currency = get_currency_rate('usd')
+        amount = int(obj.price / currency)
+        return amount if currency else None
+
+    @staticmethod
+    def get_price_eur(obj):
+        currency = get_currency_rate('eur')
+        amount = int(obj.price / currency)
+        return amount if currency else None
+
+    @staticmethod
+    def get_dog_with_same_breed(obj):
+        return Dog.objects.filter(breed=obj.breed).count()
 
     class Meta:
         model = Dog
-        fields = ('name', 'breed', 'is_public', 'dog_with_same_breed')
+        fields = ('id', 'name', 'breed', 'is_public', 'dog_with_same_breed', 'price',
+                  'price_usd', 'price_eur')
