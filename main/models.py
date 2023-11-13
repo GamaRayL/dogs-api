@@ -24,6 +24,7 @@ class Dog(models.Model):
     birth_date = models.DateField(verbose_name='дата рождения', **NULLABLE)
     email = models.CharField(max_length=150, unique=True, verbose_name='почта', **NULLABLE)
     is_public = models.BooleanField(default=False, verbose_name='для всех')
+    price = models.PositiveIntegerField(default=0, verbose_name='стоимость')
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.SET_NULL,

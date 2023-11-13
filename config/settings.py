@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework_simplejwt',
+    'drf_yasg',
 
     'main',
     'users',
@@ -83,8 +84,18 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'dogs_crud',
-        'USER': 'postgres'
+        'USER': 'postgres',
+        'PASSWORD': '1612',
+        'HOST': 'localhost',
+        'PORT': 5432
     }
+}
+
+# Pagination
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100
 }
 
 
